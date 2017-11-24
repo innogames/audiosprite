@@ -28,7 +28,7 @@ const defaults = {
 }
 
 module.exports = function(files) {
-  let opts = {}, callback = function(){}
+  var opts = {}, callback = function(){}
   
   if (arguments.length === 2) {
     callback = arguments[1]
@@ -51,7 +51,7 @@ module.exports = function(files) {
     require('mkdirp').sync(outputDir)
   }
   
-  let offsetCursor = 0
+  var offsetCursor = 0
   const wavArgs = ['-ar', opts.samplerate, '-ac', opts.channels, '-f', 's16le']
   const tempFile = mktemp('audiosprite')
   
@@ -111,7 +111,7 @@ module.exports = function(files) {
     
     fs.exists(src, function(exists) {
       if (exists) {
-        let ffmpeg = spawn('ffmpeg', ['-i', path.resolve(src)]
+        var ffmpeg = spawn('ffmpeg', ['-i', path.resolve(src)]
           .concat(wavArgs).concat('pipe:'))
         ffmpeg.stdout.pipe(fs.createWriteStream(dest, {flags: 'w'}))
         ffmpeg.on('exit', function(code, signal) {
