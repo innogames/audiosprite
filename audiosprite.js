@@ -229,7 +229,7 @@ module.exports = function(files) {
     , mp3: ['-ar', opts.samplerate, '-f', 'mp3']
     , mp4: ['-ab', opts.bitrate + 'k']
     , m4a: ['-ab', opts.bitrate + 'k', '-strict', '-2']
-    , ogg: ['-acodec', 'libvorbis', '-f', 'ogg', '-ab', opts.bitrate + 'k']
+    , ogg: ['-acodec', 'libvorbis', '-f', 'ogg', '-ab', opts.bitrate + 'k', '-flags', '+bitexact']
     , opus: ['-acodec', 'libopus', '-ab', opts.bitrate + 'k']
     , webm: ['-acodec',  'libvorbis', '-f', 'webm', '-dash', '1']
     };
