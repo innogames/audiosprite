@@ -86,6 +86,10 @@ var optimist = require('optimist')
   , 'default': ''
   , describe: 'Include raw slices(for Web Audio API) in specified formats.'
   })
+  .options('bitexact', {
+    'default': 0
+  , describe: 'Use bitexact mode from ffmpeg (0=false,1=true).'
+  })
   .options('help', {
     alias: 'h'
   , describe: 'Show this help message.'
@@ -113,6 +117,8 @@ opts.vbr = parseInt(argv.vbr, 10)
 opts['vbr:vorbis'] = parseInt(argv['vbr:vorbis'], 10)
 
 opts.loop = argv.loop ? [].concat(argv.loop) : []
+
+opts.bitexact = parseInt(argv.bitexact, 0)
 
 var files = _.uniq(argv._)
 

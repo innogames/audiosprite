@@ -55,6 +55,7 @@ info: Options:
   --samplerate, -r  Sample rate.                                                 [default: 44100]
   --channels, -c    Number of channels (1=mono, 2=stereo).                       [default: 1]
   --rawparts, -p    Include raw slices(for Web Audio API) in specified formats.  [default: ""]
+  --bitexact        Use bitexact mode from ffmpeg (0=false,1=true).              [default: 0]
   --help, -h        Show this help message.
 
 

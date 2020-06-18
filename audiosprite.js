@@ -20,6 +20,7 @@ const defaults = {
   samplerate: 44100,
   channels: 1,
   rawparts: '',
+  bitexact: 0,
   logger: {
     debug: function(){},
     info: function(){},
@@ -172,8 +173,11 @@ module.exports = function(files) {
   function exportFile(src, dest, ext, opt, store, cb) {
     var outfile = dest + '.' + ext;
     
-    spawn('ffmpeg',['-y', '-ar', opts.samplerate, '-ac', opts.channels, '-f', 's16le', '-i', src]
-      .concat(opt).concat(outfile))
+    var args = ['-y', '-ar', opts.samplerate, '-ac', opts.channels, '-f', 's16le', '-i', src].concat(opt)
+    if (opts.bitexact) {
+      args = args.concat(['-fflags', '+bitexact'])
+    }
+    spawn('ffmpeg', args.concat(outfile))
       .on('exit', function(code, signal) {
         if (code) {
           return cb({
@@ -223,15 +227,15 @@ module.exports = function(files) {
   
   function processFiles() {
     var formats = {
-      aiff: []
-    , wav: []
-    , ac3: ['-acodec', 'ac3', '-ab', opts.bitrate + 'k']
-    , mp3: ['-ar', opts.samplerate, '-f', 'mp3']
-    , mp4: ['-ab', opts.bitrate + 'k']
-    , m4a: ['-ab', opts.bitrate + 'k', '-strict', '-2']
-    , ogg: ['-acodec', 'libvorbis', '-f', 'ogg', '-ab', opts.bitrate + 'k', '-flags', '+bitexact']
-    , opus: ['-acodec', 'libopus', '-ab', opts.bitrate + 'k']
-    , webm: ['-acodec',  'libvorbis', '-f', 'webm', '-dash', '1']
+      aiff: [],
+      wav: [],
+      ac3: ['-acodec', 'ac3', '-ab', opts.bitrate + 'k'],
+      mp3: ['-ar', opts.samplerate, '-f', 'mp3'],
+      mp4: ['-ab', opts.bitrate + 'k'],
+      m4a: ['-ab', opts.bitrate + 'k', '-strict', '-2'],
+      ogg: ['-acodec', 'libvorbis', '-f', 'ogg', '-ab', opts.bitrate + 'k'],
+      opus: ['-acodec', 'libopus', '-ab', opts.bitrate + 'k'],
+      webm: ['-acodec',  'libvorbis', '-f', 'webm', '-dash', '1']
     };
     
     if (opts.vbr >= 0 && opts.vbr <= 9) {
